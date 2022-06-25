@@ -1,12 +1,14 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
+
+import ThoughtForm from '../components/ThoughtForm';
 import ThoughtList from '../components/ThoughtList';
+import FriendList from '../components/FriendList';
+
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
-import FriendList from '../components/FriendList';
-import Auth from '../utils/auth';
 import { ADD_FRIEND } from '../utils/mutations';
-import ThoughtForm from '../components/ThoughtForm';
+import Auth from '../utils/auth';
 
 const Profile = () => {
   const { username: userParam } = useParams();
@@ -20,6 +22,7 @@ const Profile = () => {
 
 
   const handleClick = async () => {
+    console.log('clicked')
     try {
       await addFriend({
         variables: { id: user._id }
@@ -53,9 +56,11 @@ const Profile = () => {
           Viewing {userParam ? `${user.username}'s` : 'your'} profile.
         </h2>
 
-        <button className="btn ml-auto" onClick={handleClick}>
-          Add Friend
-        </button>
+        {userParam && (
+          <button className="btn ml-auto" onClick={handleClick}>
+            Add Friend
+          </button>
+        )}
       </div>
 
       <div className="flex-row justify-space-between mb-3">
